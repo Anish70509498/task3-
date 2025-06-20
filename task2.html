@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Interactive Quiz</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f2f2f2;
+      padding: 40px;
+      max-width: 600px;
+      margin: auto;
+    }
+    .quiz-container {
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    .question {
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+    .answers button {
+      display: block;
+      margin: 8px 0;
+      padding: 10px;
+      width: 100%;
+      border: 1px solid #ccc;
+      background-color: #eee;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .answers button:hover {
+      background-color: #ddd;
+    }
+    .result {
+      font-weight: bold;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="quiz-container">
+    <div id="question" class="question"></div>
+    <div id="answers" class="answers"></div>
+    <div id="result" class="result"></div>
+  </div>
+
+  <script>
+    const quizData = [
+      {
+        question: "What is the capital of France?",
+        answers: ["Paris", "London", "Berlin", "Madrid"],
+        correct: "Paris"
+      },
+      {
+        question: "Which planet is known as the Red Planet?",
+        answers: ["Earth", "Mars", "Jupiter", "Saturn"],
+        correct: "Mars"
+      },
+      {
+        question: "What is the largest ocean on Earth?",
+        answers: ["Atlantic", "Indian", "Pacific", "Arctic"],
+        correct: "Pacific"
+      }
+    ];
+
+    let currentQuestion = 0;
+    let score = 0;
+
+    function loadQuestion() {
+      const questionElement = document.getElementById("question");
+      const answersElement = document.getElementById("answers");
+      const current = quizData[currentQuestion];
+
+      questionElement.textContent = current.question;
+      answersElement.innerHTML = "";
+
+      current.answers.forEach(answer => {
+        const button = document.createElement("button");
+        button.textContent = answer;
+        button.onclick = () => checkAnswer(answer);
+        answersElement.appendChild(button);
+      });
+    }
+
+    function checkAnswer(selected) {
+      const resultElement = document.getElementById("result");
+      if (selected === quizData[currentQuestion].correct) {
+        score++;
+      }
+
+      currentQuestion++;
+      if (currentQuestion < quizData.length) {
+        loadQuestion();
+      } else {
+        document.getElementById("question").style.display = "none";
+        document.getElementById("answers").style.display = "none";
+        resultElement.textContent = `Quiz finished! You scored ${score} out of ${quizData.length}.`;
+      }
+    }
+
+    // Initialize quiz
+    loadQuestion();
+  </script>
+</body>
+</html>
